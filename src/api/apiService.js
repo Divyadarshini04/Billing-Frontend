@@ -7,7 +7,7 @@ export const authAPI = {
   verifyOTP: (phone, code, role) => api.post("/api/auth/verify-otp/", { phone, code, role }),
 
   // Legacy login methods
-  login: (credentials) => api.post("/api/auth/login/", credentials), // credentials include role if added
+  login: (credentials) => api.post("/api/super-admin/login/", credentials), // credentials include role if added
   register: (userData) => api.post("/api/auth/register", userData),
   logout: () => api.post("/api/auth/logout/"),
   refreshToken: () => api.post("/api/auth/refresh/"),

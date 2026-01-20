@@ -1,5 +1,5 @@
 // API Configuration matching Django backend endpoints
-export const API_BASE_URL = 'http://127.0.0.1:8000/api';
+export const API_BASE_URL = 'https://billing-backend-sjt0.onrender.com/api';
 
 // Helper function to handle Django's nested response format: {data: {products: [...]}}
 const handleDjangoResponse = (response) => {
