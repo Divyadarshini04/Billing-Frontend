@@ -63,6 +63,8 @@ export default function SuperAdminPage() {
 
   // Verify Super Admin access
   useEffect(() => {
+    if (user === undefined) return;
+    
     if (!user?.is_super_admin) {
       navigate("/login");
     }
