@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Separate axios instance for authentication backend
 const authApi = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: process.env.REACT_APP_API_BASE_URL,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",
