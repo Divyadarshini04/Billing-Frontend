@@ -3,7 +3,7 @@ import { tokenManager } from "../utils/tokenManager";
 
 const api = axios.create({
   baseURL: 'https://billing-backend-sjt0.onrender.com',
-  timeout: 5000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json"
