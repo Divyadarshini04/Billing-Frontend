@@ -29,8 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "check-backend": "check-backend.bat"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -51,9 +50,8 @@
     ]
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.17",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.45",
-    "tailwindcss": "^3.4.1"
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19"
   }
 }
