@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Receipt, Lock, User } from "lucide-react";
-import logoImage from "figma:asset/9c281fd7f40d9fc8c08d2f76f2006a1e31355018.png";
+const logoImage = "https://placehold.co/100";
 
 export function LoginPage({ onLogin }: { onLogin: () => void }) {
   const [username, setUsername] = useState("");

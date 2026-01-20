@@ -1,5 +1,4 @@
--// Business-specific product data
-
+// Business-specific product data
 export interface Product {
   id: string;
   name: string;
@@ -30,7 +29,7 @@ export const businessProducts: Record<string, Product[]> = {
     { id: "10", name: "Hair Serum (Matrix)", sku: "PRD-SRM-01", barcode: "8901001000010", category: "Products", stock: 12, minStock: 5, purchasePrice: 400, sellingPrice: 750, taxRate: 18, supplier: "Beauty Supplies Inc", status: "In Stock", unit: "bottle" },
     { id: "11", name: "Face Cream (Olay)", sku: "PRD-FCR-01", barcode: "8901001000011", category: "Products", stock: 8, minStock: 10, purchasePrice: 350, sellingPrice: 650, taxRate: 18, supplier: "Beauty Supplies Inc", status: "Low Stock", unit: "bottle" },
   ],
-  
+
   "Tea Shop": [
     { id: "1", name: "Masala Chai", sku: "TEA-MSL", barcode: "8902001000001", category: "Beverages", stock: 999, minStock: 0, purchasePrice: 8, sellingPrice: 20, taxRate: 5, supplier: "Service", status: "In Stock", unit: "cup" },
     { id: "2", name: "Ginger Tea", sku: "TEA-GNG", barcode: "8902001000002", category: "Beverages", stock: 999, minStock: 0, purchasePrice: 8, sellingPrice: 20, taxRate: 5, supplier: "Service", status: "In Stock", unit: "cup" },
@@ -44,7 +43,7 @@ export const businessProducts: Record<string, Product[]> = {
     { id: "10", name: "Bun Maska", sku: "SNK-BUN", barcode: "8902001000010", category: "Snacks", stock: 28, minStock: 15, purchasePrice: 12, sellingPrice: 30, taxRate: 5, supplier: "Local Bakery", status: "In Stock", unit: "piece" },
     { id: "11", name: "Cookies Pack", sku: "SNK-CKE", barcode: "8902001000011", category: "Snacks", stock: 8, minStock: 10, purchasePrice: 15, sellingPrice: 30, taxRate: 12, supplier: "Britannia", status: "Low Stock", unit: "pack" },
   ],
-  
+
   Restaurant: [
     { id: "1", name: "Paneer Butter Masala", sku: "CUR-PBM", barcode: "8903001000001", category: "Main Course", stock: 999, minStock: 0, purchasePrice: 120, sellingPrice: 280, taxRate: 5, supplier: "Service", status: "In Stock", unit: "plate" },
     { id: "2", name: "Chicken Tikka Masala", sku: "CUR-CTM", barcode: "8903001000002", category: "Main Course", stock: 999, minStock: 0, purchasePrice: 140, sellingPrice: 320, taxRate: 5, supplier: "Service", status: "In Stock", unit: "plate" },
@@ -59,7 +58,7 @@ export const businessProducts: Record<string, Product[]> = {
     { id: "11", name: "Mineral Water 1L", sku: "BEV-WTR", barcode: "8903001000011", category: "Beverages", stock: 48, minStock: 20, purchasePrice: 15, sellingPrice: 30, taxRate: 12, supplier: "Bisleri", status: "In Stock", unit: "bottle" },
     { id: "12", name: "Soft Drink", sku: "BEV-SFT", barcode: "8903001000012", category: "Beverages", stock: 6, minStock: 12, purchasePrice: 20, sellingPrice: 40, taxRate: 12, supplier: "Coca Cola", status: "Low Stock", unit: "bottle" },
   ],
-  
+
   Bakery: [
     { id: "1", name: "Black Forest Cake 1Kg", sku: "CKE-BLK-1", barcode: "8904001000001", category: "Cakes", stock: 8, minStock: 3, purchasePrice: 350, sellingPrice: 650, taxRate: 5, supplier: "In-house", status: "In Stock", unit: "cake" },
     { id: "2", name: "Chocolate Truffle Cake 1Kg", sku: "CKE-CHC-1", barcode: "8904001000002", category: "Cakes", stock: 5, minStock: 3, purchasePrice: 400, sellingPrice: 750, taxRate: 5, supplier: "In-house", status: "In Stock", unit: "cake" },
@@ -73,7 +72,7 @@ export const businessProducts: Record<string, Product[]> = {
     { id: "10", name: "Sandwich (Veg)", sku: "SNK-SDV", barcode: "8904001000010", category: "Snacks", stock: 25, minStock: 15, purchasePrice: 35, sellingPrice: 80, taxRate: 5, supplier: "In-house", status: "In Stock", unit: "piece" },
     { id: "11", name: "Chocolate Chip Cookies", sku: "CKE-CHP", barcode: "8904001000011", category: "Cookies", stock: 7, minStock: 10, purchasePrice: 60, sellingPrice: 120, taxRate: 12, supplier: "In-house", status: "Low Stock", unit: "pack" },
   ],
-  
+
   "Clothing Store": [
     { id: "1", name: "Men's T-Shirt (Cotton)", sku: "CLT-TSM-C", barcode: "8905001000001", category: "Men's Wear", stock: 45, minStock: 20, purchasePrice: 200, sellingPrice: 450, taxRate: 12, supplier: "Fashion Hub Ltd", status: "In Stock", unit: "piece" },
     { id: "2", name: "Men's Jeans", sku: "CLT-JNM", barcode: "8905001000002", category: "Men's Wear", stock: 32, minStock: 15, purchasePrice: 600, sellingPrice: 1200, taxRate: 12, supplier: "Denim Co", status: "In Stock", unit: "piece" },
@@ -86,7 +85,7 @@ export const businessProducts: Record<string, Product[]> = {
     { id: "9", name: "Sports Shoes", sku: "SHO-SPT", barcode: "8905001000009", category: "Footwear", stock: 18, minStock: 10, purchasePrice: 800, sellingPrice: 1600, taxRate: 12, supplier: "Shoe Palace", status: "In Stock", unit: "pair" },
     { id: "10", name: "Formal Shoes", sku: "SHO-FRM", barcode: "8905001000010", category: "Footwear", stock: 8, minStock: 10, purchasePrice: 900, sellingPrice: 1800, taxRate: 12, supplier: "Shoe Palace", status: "Low Stock", unit: "pair" },
   ],
-  
+
   "Retail Store": [
     { id: "1", name: "Rice 5Kg", sku: "GRC-RIC-5", barcode: "8906001000001", category: "Groceries", stock: 120, minStock: 50, purchasePrice: 200, sellingPrice: 300, taxRate: 5, supplier: "India Gate", status: "In Stock", unit: "bag" },
     { id: "2", name: "Wheat Flour 10Kg", sku: "GRC-WHT-10", barcode: "8906001000002", category: "Groceries", stock: 85, minStock: 40, purchasePrice: 350, sellingPrice: 500, taxRate: 5, supplier: "Aashirvaad", status: "In Stock", unit: "bag" },

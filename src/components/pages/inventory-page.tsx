@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Search, Plus, Edit, Trash2, AlertTriangle, Upload, Download, Package, Barcode } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { businessProducts, getBusinessCategories, getBusinessSuppliers, type Product } from "../data/business-products";
 import type { StoreInfo } from "./phone-auth-page";
 

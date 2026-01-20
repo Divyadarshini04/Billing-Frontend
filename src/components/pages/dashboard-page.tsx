@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { TrendingUp, Receipt, AlertCircle, Package, Users, Wallet, CreditCard } from "lucide-react";
 import { Button } from "../ui/button";
-import type { Page } from "../../App";
+import type { Page } from "../../types";
 import type { UserRole } from "./phone-auth-page";
 import { SalesDashboard } from "./sales-dashboard";
 import { OwnerDashboard } from "./owner-dashboard";

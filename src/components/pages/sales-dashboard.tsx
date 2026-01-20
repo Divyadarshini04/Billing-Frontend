@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Receipt, Package, Users, TrendingUp } from "lucide-react";
 import { Button } from "../ui/button";
-import type { Page } from "../../App";
+import type { Page } from "../../types";
 
 export function SalesDashboard({ onNavigate }: { onNavigate?: (page: Page) => void }) {
   return (

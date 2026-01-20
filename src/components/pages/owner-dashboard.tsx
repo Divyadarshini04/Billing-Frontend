@@ -18,7 +18,7 @@ import {
 import { TrendingUp, Receipt, AlertCircle, Package, Users, Wallet, CreditCard, IndianRupee, FileText, Calendar } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import type { Page } from "../../App";
+import type { Page } from "../../types";
 
 const dailySalesData = [
   { day: 'Mon', sales: 12000, tax: 2160, profit: 3600 },

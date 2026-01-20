@@ -26,8 +26,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { toast } from "sonner@2.0.3";
-import logoImage from "figma:asset/9c281fd7f40d9fc8c08d2f76f2006a1e31355018.png";
+import { toast } from "sonner";
+const logoImage = "https://placehold.co/100";
 
 interface Reference {
   id: string;

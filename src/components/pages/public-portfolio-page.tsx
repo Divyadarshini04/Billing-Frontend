@@ -14,8 +14,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
-import { toast } from "sonner@2.0.3";
-import logoImage from "figma:asset/9c281fd7f40d9fc8c08d2f76f2006a1e31355018.png";
+import { toast } from "sonner";
+const logoImage = "https://placehold.co/100";
 
 interface Reference {
   id: string;

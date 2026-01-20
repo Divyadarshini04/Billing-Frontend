@@ -6,8 +6,8 @@ import { Badge } from "../ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Phone, ArrowLeft, Shield, User, TrendingUp, Users, Store, MapPin, Building2, Coffee, Scissors, UtensilsCrossed, ShoppingBag, Cake, Shirt } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { toast } from "sonner@2.0.3";
-import logoImage from "figma:asset/9c281fd7f40d9fc8c08d2f76f2006a1e31355018.png";
+import { toast } from "sonner";
+const logoImage = "https://placehold.co/100";
 
 export type UserRole = 'owner' | 'sales' | 'admin';
 

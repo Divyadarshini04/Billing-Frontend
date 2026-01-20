@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { User, Mail, Building, Briefcase, Upload, Link as LinkIcon, Plus, Eye, RefreshCw, Copy } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import logoImage from "figma:asset/9c281fd7f40d9fc8c08d2f76f2006a1e31355018.png";
+const logoImage = "https://placehold.co/100";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -9,7 +9,7 @@ import { Textarea } from "../ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function CreatePortfolioPage() {
   const [employeeDetails] = useState({

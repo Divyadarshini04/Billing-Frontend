@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { TrendingUp, Receipt, AlertCircle, Package, Users, Wallet, CreditCard, Shield, Activity, FileText } from "lucide-react";
 import { Button } from "../ui/button";
-import type { Page } from "../../App";
+import type { Page } from "../../types";
 import { Badge } from "../ui/badge";
 
 const salesData = [
