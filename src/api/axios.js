@@ -2,7 +2,7 @@ import axios from "axios";
 import { tokenManager } from "../utils/tokenManager";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: 'https://billing-backend-sjt0.onrender.com',
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
