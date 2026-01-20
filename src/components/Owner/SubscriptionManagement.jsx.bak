@@ -1,0 +1,346 @@
+import React, { useState, useEffect, useContext } from "react";
+import { motion } from "framer-motion";
+import { CreditCard, CheckCircle, RefreshCw, Clock, Loader, AlertCircle, TrendingUp, Users, Calendar, Zap } from "lucide-react";
+import authAxios from "../../api/authAxios";
+import { NotificationContext } from "../../context/NotificationContext";
+
+export default function SubscriptionManagement() {
+  const { addNotification } = useContext(NotificationContext);
+  const [loading, setLoading] = useState(true);
+  const [plans, setPlans] = useState([]);
+  const [userSubscription, setUserSubscription] = useState(null);
+  const [daysRemaining, setDaysRemaining] = useState(0);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch all subscription plans
+      const plansRes = await authAxios.get("/api/subscription/plans/");
+      const plansList = Array.isArray(plansRes.data) ? plansRes.data : plansRes.data?.results || [];
+      setPlans(plansList);
+
+      // Try to fetch user's current subscription
+      try {
+        const subRes = await authAxios.get("/api/subscription/my-subscription/");
+        setUserSubscription(subRes.data);
+        
+        // Calculate days remaining
+        if (subRes.data?.end_date) {
+          const endDate = new Date(subRes.data.end_date);
+          const now = new Date();
+          const remaining = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+          setDaysRemaining(remaining > 0 ? remaining : 0);
+        }
+      } catch (error) {
+        setUserSubscription(null);
+        setDaysRemaining(0);
+      }
+    } catch (error) {
+      console.error("Error fetching subscription data:", error);
+      addNotification("Error loading subscription plans: " + (error.response?.data?.detail || error.message), "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpgradePlan = async (planId) => {
+    try {
+      setLoading(true);
+      const response = await authAxios.post("/api/subscription/upgrade/", {
+        plan_id: planId,
+      });
+      addNotification("Plan upgraded successfully", "success");
+      await fetchData();
+    } catch (error) {
+      console.error("Error upgrading plan:", error);
+      addNotification(
+        error.response?.data?.message || "Error upgrading plan",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getPlanColor = (planType) => {
+    const colors = {
+      free: "from-slate-600 to-slate-700",
+      basic: "from-blue-600 to-blue-700",
+      standard: "from-purple-600 to-purple-700",
+      premium: "from-yellow-600 to-yellow-700",
+    };
+    return colors[planType?.toLowerCase()] || "from-slate-600 to-slate-700";
+  };
+
+  const getFeatures = (featuresData) => {
+    if (!featuresData) return [];
+    
+    // If it's an array, return it
+    if (Array.isArray(featuresData)) {
+      return featuresData;
+    }
+    
+    // If it's an object, extract values as feature list
+    if (typeof featuresData === 'object') {
+      return Object.values(featuresData).filter(val => 
+        val === true || (typeof val === 'string' && val.length > 0)
+      ).map(val => {
+        if (val === true) return "";
+        return val;
+      }).filter(Boolean);
+    }
+    
+    return [];
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader className="w-8 h-8 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div>
+        <h2 className="text-2xl font-bold text-white mb-2">Subscription Management</h2>
+        <p className="text-slate-400">View and manage your subscription plan</p>
+      </div>
+
+      {/* Debug Info */}
+      <div className="p-4 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-300 text-sm">
+        <p>Plans loaded: {plans.length}</p>
+        <p>Current subscription: {userSubscription ? "Yes" : "No"}</p>
+      </div>
+
+      {/* Current Subscription */}
+      {userSubscription ? (
+        <motion.div
+          className="p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700"
+        >
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-2">
+                {userSubscription.plan?.name || "Plan"} Plan
+              </h3>
+              <p className="text-slate-400">Your current subscription</p>
+            </div>
+            <div
+              className={`px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 ${
+                userSubscription.status === "ACTIVE"
+                  ? "bg-green-500/20 text-green-400"
+                  : "bg-yellow-500/20 text-yellow-400"
+              }`}
+            >
+              <CheckCircle className="w-4 h-4" />
+              {userSubscription.status}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div>
+              <p className="text-slate-400 text-sm">Plan Price</p>
+              <p className="text-white text-2xl font-bold mt-1">₹{userSubscription.plan?.price}</p>
+              <p className="text-slate-500 text-xs mt-1">
+                / {userSubscription.plan?.duration_days === 0 ? "Unlimited" : userSubscription.plan?.duration_days + " days"}
+              </p>
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Start Date</p>
+              <p className="text-white text-lg font-bold mt-1">
+                {new Date(userSubscription.start_date).toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Next Renewal</p>
+              <p className="text-white text-lg font-bold mt-1">
+                {userSubscription.plan?.duration_days === 0
+                  ? "Never"
+                  : new Date(userSubscription.end_date).toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Max Staff Users</p>
+              <p className="text-white text-lg font-bold mt-1">
+                {userSubscription.plan?.max_staff_users === 0 ? "∞ Unlimited" : userSubscription.plan?.max_staff_users}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4 flex-wrap pt-6 border-t border-slate-700">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Upgrade Plan
+            </motion.button>
+          </div>
+        </motion.div>
+      ) : (
+        <div className="p-8 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-yellow-400">
+          <p>You don't have an active subscription yet. Choose a plan below to get started!</p>
+        </div>
+      )}
+
+      {/* Available Plans */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <CreditCard className="w-5 h-5 text-cyan-400" />
+          Available Plans
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {plans.map((plan) => {
+            const isCurrentPlan = userSubscription?.plan?.id === plan.id;
+            return (
+              <motion.div
+                key={plan.id}
+                whileHover={{ scale: 1.05 }}
+                className={`p-6 rounded-xl border-2 transition relative ${
+                  isCurrentPlan
+                    ? "bg-gradient-to-br from-slate-800 to-slate-900 border-cyan-500"
+                    : "bg-slate-800/50 border-slate-700 hover:border-slate-600"
+                }`}
+              >
+                {isCurrentPlan && (
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">
+                    Current Plan
+                  </div>
+                )}
+
+                {/* Plan Badge */}
+                <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 bg-gradient-to-r ${getPlanColor(plan.code)} text-white`}>
+                  {plan.code?.toUpperCase()}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
+                <p className="text-slate-400 text-sm mb-4 min-h-10">{plan.description}</p>
+
+                <div className="mb-6">
+                  <p className="text-3xl font-bold text-white">₹{plan.price}</p>
+                  <p className="text-slate-400 text-sm">
+                    / {plan.duration_days === 0 ? "∞ Unlimited" : `${plan.duration_days} days`}
+                  </p>
+                </div>
+
+                <div className="mb-6 pb-6 border-b border-slate-700">
+                  <p className="text-slate-400 text-xs font-semibold mb-2">Features</p>
+                  <ul className="space-y-2">
+                    <li className="flex items-center gap-2 text-slate-300 text-sm">
+                      <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                      <span>Max Staff Users: {plan.max_staff_users === 0 ? "∞ Unlimited" : plan.max_staff_users}</span>
+                    </li>
+                    {getFeatures(plan.features).length > 0 ? (
+                      getFeatures(plan.features).map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-slate-300 text-sm">
+                          <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))
+                    ) : (
+                      // Default features based on plan type
+                      <>
+                        {plan.code === "FREE" && (
+                          <>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Basic POS Features</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>7-Day Trial Period</span>
+                            </li>
+                          </>
+                        )}
+                        {plan.code === "BASIC" && (
+                          <>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Full POS System</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Inventory Management</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Sales Reports</span>
+                            </li>
+                          </>
+                        )}
+                        {plan.code === "STANDARD" && (
+                          <>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Everything in Basic</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Advanced Analytics</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Customer Management</span>
+                            </li>
+                          </>
+                        )}
+                        {plan.code === "PREMIUM" && (
+                          <>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Everything in Standard</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Unlimited Staff Users</span>
+                            </li>
+                            <li className="flex items-center gap-2 text-slate-300 text-sm">
+                              <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                              <span>Priority Support</span>
+                            </li>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </ul>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleUpgradePlan(plan.id)}
+                  disabled={isCurrentPlan || loading}
+                  className={`w-full py-2 px-4 rounded-lg font-medium transition ${
+                    isCurrentPlan
+                      ? "bg-slate-700 text-slate-400 cursor-default"
+                      : "bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:shadow-lg active:scale-95 disabled:opacity-50"
+                  }`}
+                >
+                  {isCurrentPlan ? "Current Plan" : "Upgrade"}
+                </motion.button>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Empty State */}
+      {plans.length === 0 && (
+        <div className="p-8 bg-slate-800/50 border border-slate-700 rounded-xl text-center">
+          <p className="text-slate-400">No subscription plans available</p>
+        </div>
+      )}
+    </motion.div>
+  );
+}
