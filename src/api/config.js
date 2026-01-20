@@ -1,5 +1,5 @@
 // API Configuration matching Django backend endpoints
-export const API_BASE_URL = 'https://billing-backend-sjt0.onrender.com/api';
+export const REACT_APP_API_BASE_URL = 'https://billing-backend-sjt0.onrender.com/api';
 
 // Helper function to handle Django's nested response format: {data: {products: [...]}}
 const handleDjangoResponse = (response) => {
@@ -14,7 +14,7 @@ const handleDjangoResponse = (response) => {
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: REACT_APP_API_BASE_URL,
   timeout: 8000,
   headers: {
     'Content-Type': 'application/json',
