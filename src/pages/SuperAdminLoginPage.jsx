@@ -68,6 +68,8 @@ export default function SuperAdminLoginPage() {
     setLoading(true);
     try {
         const response = await authAPI.login({ phone, password, role: "SUPERADMIN" });
+        
+        console.log("LOGIN RESPONSE:", response.data);
 
         if (response.data.access) {
             tokenManager.setToken(response.data.access);
