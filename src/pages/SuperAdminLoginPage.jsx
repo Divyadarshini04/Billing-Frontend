@@ -58,47 +58,45 @@ export default function SuperAdminLoginPage() {
     };
 
     const handlePasswordSubmit = async () => {
-        setError("");
-        if (!password) {
-            setError("Please enter a password");
-            return;
+    setError("");
+
+    if (!password) {
+        setError("Please enter a password");
+        return;
+    }
+
+    setLoading(true);
+    try {
+        const response = await authAPI.login({ phone, password, role: "SUPERADMIN" });
+
+        if (response.data.access) {
+            tokenManager.setToken(response.data.access);
         }
 
-        setLoading(true);
-        try {
-            const response = await authAPI.login({ phone, password, role: "SUPERADMIN" });
+        const userData = {
+            first_name: response.data.first_name,
+            phone: response.data.phone,
+            role: "SUPERADMIN",
+            is_super_admin: response.data.is_super_admin === true,
+        };
 
-            if (response.data.token) {
-                tokenManager.setToken(response.data.token);
-            }
-
-            const backendUser = response.data.user;
-
-            // Strict Super Admin Check
-            if (!backendUser.is_super_admin && !backendUser.roles?.some(r => r.name === "SUPERADMIN")) {
-                throw new Error("Access Denied: You do not have Super Admin privileges.");
-            }
-
-            const userData = {
-                ...backendUser,
-                role: "SUPERADMIN",
-                is_super_admin: true,
-                name: backendUser?.first_name || backendUser?.name || 'Super Admin'
-            };
-
-            login(userData);
-            navigate("/super-admin");
-
-        } catch (err) {
-            console.error("Login Error:", err);
-            const errorMsg = err.response?.data?.detail ||
-                err.message ||
-                "Login failed. Please check your credentials.";
-            setError(errorMsg);
-        } finally {
-            setLoading(false);
+        if (!userData.is_super_admin) {
+            throw new Error("Access Denied: You are not a Super Admin");
         }
-    };
+
+        login(userData);
+        navigate("/super-admin");
+
+    } catch (err) {
+        const errorMsg =
+            err.response?.data?.detail ||
+            err.message ||
+            "Login failed. Please check your credentials.";
+        setError(errorMsg);
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-inter bg-gray-50">
