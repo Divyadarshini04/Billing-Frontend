@@ -68,7 +68,7 @@ export default function SuperAdminLoginPage() {
     setLoading(true);
     try {
         const response = await authAPI.login({ phone, password, role: "SUPERADMIN" });
-        
+
         console.log("LOGIN RESPONSE:", response.data);
 
         if (response.data.access) {
@@ -78,8 +78,8 @@ export default function SuperAdminLoginPage() {
         const userData = {
             first_name: response.data.first_name,
             phone: response.data.phone,
-            role: "SUPERADMIN",
-            is_super_admin: response.data.is_super_admin === true,
+            role: response.data.role,
+            is_super_admin: response.data.role === "SUPER_ADMIN",
         };
 
         if (!userData.is_super_admin) {
